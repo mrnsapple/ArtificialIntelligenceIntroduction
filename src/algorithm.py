@@ -5,6 +5,7 @@ import abc
 from enum import Enum
 class AlgorithmType(Enum):
     MinMax=1
+    Random=2
 class AlgorithmException(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
@@ -15,5 +16,5 @@ class Algorithm():
         pass
 
     @abc.abstractmethod
-    def get_successor(problem:Problem, node:Node) -> Node:
+    def get_successor(self, problem:Problem, node:Node) -> Node:
         return

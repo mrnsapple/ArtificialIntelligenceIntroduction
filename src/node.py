@@ -6,11 +6,11 @@ class NodeException(Exception):
 
 class Node():
     def __init__(self, data=None, parent=None, childs=[], tree_lvl=0, is_visited=False) -> None:
-        self._data = data
+        self.data = data
         self.parent = parent
         self.childs = childs
-        self.tree_lvl = 0
-        self.is_visited = False
+        self.tree_lvl = tree_lvl
+        self.is_visited = is_visited
 
     def has_parent(self) -> bool:
         return True if self.parent else False
@@ -22,17 +22,9 @@ class Node():
     def add_child(self, node: None) -> None:
         self.childs.append(node)
     
-    @property
-    def data(self, data) -> None:
-        self._data = data
-    
-    @data.setter
-    def data(self, data):
-        return self._data
-    
-    @staticmethod
-    def make_node(data, parent):
-        return Node(data=data,parent=parent, childs=[], tree_lvl=0, is_visited=False)
+    #@staticmethod
+    #def make_node(data, parent:Node):
+    #    return Node(data=data,parent=parent, childs=[], tree_lvl=parent.tree_level+1, is_visited=False)
     
     def __EQ__(self, other):
         if self._data == other._data:
