@@ -29,12 +29,14 @@ class MinMaxProblem():
         parent_response_index = node.parent.data["response_index"]
         character_to_move = node.parent.data["data"][parent_response_index]
         #create a child node which each possible player move
+        #update character position+change question+addresponse of position took in child
         for pos in node.data["data"]:
             child = Node(data=node.data["data"], parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
             node.childs.append(child)
             for character_pos in range(child.data["characters"]):
                 if child.data["characters"][character_pos]["color"] is character_to_move["color"]:
                     child.data["characters"][character_pos]["position"] = pos
+                    child.data["response_index"] = pos
     
     def select_characters(self, node:Node):
         #heuristic for this fail
