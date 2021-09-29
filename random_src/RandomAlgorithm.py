@@ -1,5 +1,5 @@
 from ArtificialIntelligenceIntroduction.random_src.RandomProblem import RandomProblem
-from ArtificialIntelligenceIntroduction.minmax_src.MinMaxheuristic import MinMaxHeuristic
+from ArtificialIntelligenceIntroduction.minmax_src.MinMaxProblem import MinMaxProblem
 from ArtificialIntelligenceIntroduction.src.node import Node
 from ArtificialIntelligenceIntroduction.src.problem import Problem
 from ArtificialIntelligenceIntroduction.src.algorithm import Algorithm, AlgorithmException
@@ -11,7 +11,7 @@ class RandomAlgorithm(Algorithm):
             raise AlgorithmException("Node or problem does not exist")
         data = node.data["data"]
         game_state =  node.data["game state"]
-        RandomProblem(problem).heuristic.checkNodeValue(node.data)
+        #RandomProblem(problem).heuristic.checkNodeValue(node.data)
         response_index = random.randint(0, len(data)-1)
         print("\n\n")
         print(node.data)
