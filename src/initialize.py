@@ -93,6 +93,10 @@ class Initialize():
         while not end:
             print("IN LOOP")
             received_message = self.get_data()
+            if not received_message:
+                print("no message, finished learning")
+                end = True
+                continue
             self.fantom_logger.debug("|\n|")
             self.fantom_logger.debug("fantom answers")
             self.fantom_logger.debug(f"question type ----- {received_message['question type']}")
@@ -103,9 +107,7 @@ class Initialize():
             self.fantom_logger.debug(f"response ---------- {received_message['data'][response]}")
         
             self.send_data(response)
-            if not received_message:
-                print("no message, finished learning")
-                end = True
+          
 
 
     def launch_tree(self, data):
