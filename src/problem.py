@@ -12,7 +12,8 @@ class Problem():
     def __init__(self, algorithm_type=None, initial_state= None) -> None:
         self.initial_state = initial_state
         self.algorithm_type = algorithm_type
-
+        #Info server give us
+        self.data = None
     @abc.abstractmethod
     def compare_with_desired_state(self, current:Node):
         return False

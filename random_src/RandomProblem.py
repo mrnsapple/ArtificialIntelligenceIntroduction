@@ -1,3 +1,4 @@
+from ArtificialIntelligenceIntroduction.minmax_src.MinMaxheuristic import  MinMaxHeuristic
 from ArtificialIntelligenceIntroduction.src.problem import Problem
 import socket
 import logging
@@ -7,6 +8,10 @@ import json
 import random
 
 class RandomProblem(Problem):
+    def __init__(self, algorithm_type=None, initial_state=None) -> None:
+        super().__init__(algorithm_type=algorithm_type, initial_state=initial_state)
+        self.heuristic = MinMaxHeuristic()
+
     def compare_with_desired_state(self, current):
         print("comparr with desired state")
         if current.tree_lvl > 0:

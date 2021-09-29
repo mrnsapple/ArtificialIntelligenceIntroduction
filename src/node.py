@@ -6,6 +6,7 @@ class NodeException(Exception):
 
 class Node():
     def __init__(self, data=None, parent=None, childs=[], tree_lvl=0, is_visited=False) -> None:
+        #value of the node
         self.data = data
         self.parent = parent
         self.childs = childs
