@@ -15,6 +15,18 @@ class InitializeException(Exception):
         super().__init__(*args)
         
 class Initialize():
+    """
+    The base class structure of the project is composed of the initialize class,
+    It is the class used to start the communication with the server. 
+    All project clases are intialized and destroyed in this class
+    """
+
+    """
+    @param algorithm_type:AlgorithmType The type chosen to solve the algorithm 
+    @param problem:Problem  Logics that are specific for each problem we solve
+    @param algorithm: All logic for the specific algorithm used to move in the tree search
+    @return None
+    """
     def __init__(self, algorithm_type:AlgorithmType, problem:Problem, algorithm:Algorithm) -> None:
         self.algorithm_type =algorithm_type
         self.problem = problem
@@ -27,11 +39,12 @@ class Initialize():
         self.set_logs()  
         self.connect()
 
-    def set_logs(self):
+    """
+    Initialize log files
     
-        """
-        set up  logging
-        """
+    @return None
+    """
+    def set_logs(self):
         self.fantom_logger = logging.getLogger()
         self.fantom_logger.setLevel(logging.DEBUG)
         self.formatter = logging.Formatter(
@@ -48,30 +61,29 @@ class Initialize():
         stream_handler.setLevel(logging.WARNING)
         self.fantom_logger.addHandler(stream_handler)
 
+    """
+    Connect to the server
+
+    @return None
+    """
     def connect(self):
         logging.debug('This message should go to the log file')
         self.socket.connect((self.host, self.port))
 
+    """
+    Close connection with server
+
+    @return None
+    """
     def reset(self):
+        
         self.socket.close()
 
-    def answer(self, question):
-        # work
-        print(question)
-        print("\n\n")   
+    """
+    Get data from the server
 
-        data = question["data"]
-        game_state = question["game state"]
-        response_index = random.randint(0, len(data)-1)
-        # log
-        self.fantom_logger.debug("|\n|")
-        self.fantom_logger.debug("fantom answers")
-        self.fantom_logger.debug(f"question type ----- {question['question type']}")
-        self.fantom_logger.debug(f"data -------------- {data}")
-        self.fantom_logger.debug(f"response index ---- {response_index}")
-        self.fantom_logger.debug(f"response ---------- {data[response_index]}")
-        return response_index
-
+    @return dict the data retrieved from the server 
+    """
     def get_data(self):
         data = protocol.receive_json(self.socket)
         if not data:
@@ -79,15 +91,23 @@ class Initialize():
         data = json.loads(data)
         return data
 
-    def send_data(self, data):
-        #response = self.answer(data)
-        # send back to server
+    """
+    Send data to the server
 
+    @param data:dict data to send to the server
+    @return None
+    """
+    def send_data(self, data):
         #if not data:
         #    raise InitializeException("No data to be sent")
         bytes_data = json.dumps(data).encode("utf-8")
         protocol.send_json(self.socket, bytes_data)
 
+    """
+    Loop of the game, it will finish when one of the player wins and server stops sending data to client
+
+    @return None
+    """
     def run(self):
         end = False
         while not end:
@@ -109,7 +129,12 @@ class Initialize():
             self.send_data(response)
           
 
+    """
+    Run the tree search that will return an answer to the server given a specific problem and algorithm
 
+    @param data:Dict The information received from the server
+    @return Node answer to give to the server
+    """
     def launch_tree(self, data):
         self.problem.initial_state = Node(data)
         node:Node = self.tree.tree_search(self.problem, self.algorithm)

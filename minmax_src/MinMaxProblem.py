@@ -1,6 +1,6 @@
 from typing import List, Set
 from ArtificialIntelligenceIntroduction.src.node import Node
-
+from ArtificialIntelligenceIntroduction.minmax_src import globals
 
 class MinMaxProblemException(Exception):
     def __init__(self, *args: object) -> None:
@@ -20,6 +20,16 @@ class MinMaxProblem():
             "blue character power room":self.activate_power,
             "blue character power exit":self.activate_power
         }
+#we take this character with this position
+#in the node it contains all the stuff to perform for the round(need to perfectly replicate server)
+#we do node one question answered to server,better first version
+#so lets study all possible combinations of moves
+#if we do action by action what happens is that we move from min max to maxmaxmax three turns but it could work
+#if we do turn base, the node stores all the player moves for the turn(but then if we do it wrong, we use randomness, can work)
+#activate power
+#move
+#activate power
+
 
     
     def select_positions(self, node:Node):
@@ -37,20 +47,33 @@ class MinMaxProblem():
                 if child.data["characters"][character_pos]["color"] is character_to_move["color"]:
                     child.data["characters"][character_pos]["position"] = pos
                     child.data["response_index"] = pos
+                    child.data["question type"] = ""#check which player is
     
     def select_characters(self, node:Node):
         #heuristic for this fail
-        print("in select_characters")
-        pass
-    
-    def activate_power(self, node:Node):
-        data = node.data["data"]
+        print("in select_characters, the tourn started")
+        characters = node.data["data"]
+        for character in characters:
+            child = Node(data=node.data["data"], parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
+            node.childs.append(child)
+            for character_pos in range(characters):
+                child.data["response_index"] = character_pos
+                child_childs = self.activate_power(child, globals.before, characters[character_pos])
+                [ self.select_positions(child_child) for child_child in child_childs]
+                self.activate_power(child, globals.after, characters[character_pos])
 
+    
+    def activate_power(self, node:Node, activables, character):
+        if not character["color"] in activables:
+            return node
+        node.data["question type"] = "activate {} power".format(character["color"])
         print("in activate_power")
-        pass
     
 
     def calculate_node_heuristic(self, node:Node):
+      
+        #one tourn, or rather, one action and the tourn value is the sum of the actions heuristic   
+
         #calculate how many characters are alone and how many togheter
         game_state = node.data["game state"]
         characters = game_state["characters"]
@@ -60,6 +83,7 @@ class MinMaxProblem():
             for p in characters:
                 if p["position"] == i:
                     partition[i] = partition[i]+1
+            #remaining character suspects*numbe of charactor alone/total number of characters
         #Calculate number of characters alone
         number_characters_alone=0
         for p in partition:
@@ -73,8 +97,7 @@ class MinMaxProblem():
     def calculate_child_node_heuristic(self, node:Node):
             for child in node.childs:
                 self.calculate_node_heuristic(child)
-        
-    
+
 
     def getSuccessors(self, node:Node):
         question_type = node.data["question type"]
