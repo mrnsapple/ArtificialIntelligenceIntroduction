@@ -1,4 +1,5 @@
-from ArtificialIntelligenceIntroduction.src.algorithm import Algorithm
+from src.algorithm import Algorithm
+from src.node import Node
 
 class MinMax(Algorithm):
     def __init__(self) -> None:
@@ -20,20 +21,20 @@ class MinMax(Algorithm):
                 maxNode = node
         return maxNode
     
-    def algo(self, node):
+    def algo(self, node: Node):
         next_values = list()
         
         if node.tree_lvl not in self.minimisernode and node.tree_lvl not in self.maximisernode:
             return node.data
         
         if node.tree_lvl in self.minimisernode:
-            for next_node in get_successor(node):
+            for next_node in node.childs:
                 next_values.append(self.algo(next_node))
             nodeValue = self.CompareNodeMin(next_values)
             return nodeValue
             
         if node.tree_lvl in self.maximisernode:
-            for next_node in get_successor(node):
+            for next_node in node.childs:
                 next_values.append(self.algo(next_node))
             nodeValue = self.CompareNodeMax(next_values)
             return nodeValue
