@@ -8,7 +8,7 @@ class MinMaxProblemException(Exception):
       
 class MinMaxProblem():
     
-    def __init__(self) -> None:
+    def __init__(self, initial_state= None) -> None:
         self.question_types = {
             "select position":self.select_positions,
             "select character":self.select_characters,
@@ -20,6 +20,9 @@ class MinMaxProblem():
             "blue character power room":self.activate_power,
             "blue character power exit":self.activate_power
         }
+        self.initial_state = initial_state
+        self.num_tours = 2
+
 #we take this character with this position
 #in the node it contains all the stuff to perform for the round(need to perfectly replicate server)
 #we do node one question answered to server,better first version
@@ -106,10 +109,16 @@ class MinMaxProblem():
                 function(node)
         self.calculate_child_node_heuristic(node)
 
-    def compare_with_desired_state(self, current):
+    def get_return_node(self, node:Node):
+        if node.parent is self.initial_state:
+            return node
+        self.get_return_node(node.parent)
+
+
+    def compare_with_desired_state(self, current:Node):
         print("comparr with desired state")
-        if current.tree_lvl > 0:
-            return True
-        return False    
+        if current.data["game state"]["num_tour"] < self.num_tours + self.initial_state.data["game state"]["num_tour"]:
+            return None
+        return self.get_return_node(current)    
       
     

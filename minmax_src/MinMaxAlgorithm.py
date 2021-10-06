@@ -38,7 +38,7 @@ class MinMaxAlgorithm(Algorithm):
                 best_node = node
         return best_node
 
-    #give the node that has the better result to throw in this turn
+    #give the node that has the better result to throw in this turn calculating all best moves this player can do in the turn
     def get_successor(self, problem: MinMaxProblem, node: Node) -> Node:
         if not node or not problem:
             raise AlgorithmException("Node or problem does not exist")

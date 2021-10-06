@@ -138,4 +138,4 @@ class Initialize():
     def launch_tree(self, data):
         self.problem.initial_state = Node(data)
         node:Node = self.tree.tree_search(self.problem, self.algorithm)
-        return node.data
+        return 0
