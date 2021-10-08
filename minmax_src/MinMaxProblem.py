@@ -34,7 +34,6 @@ class MinMaxProblem():
 #activate power
 
 
-    
     def select_positions(self, node:Node):
         if node.parent.data["question type"] is not "select character":
             return
@@ -58,19 +57,28 @@ class MinMaxProblem():
         characters = node.data["data"]
         for character in characters:
             child = Node(data=node.data["data"], parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
+            child.data["node_state"] = node.data["node_state"]
             node.childs.append(child)
             for character_pos in range(characters):
                 child.data["response_index"] = character_pos
-                child_childs = self.activate_power(child, globals.before, characters[character_pos])
-                [ self.select_positions(child_child) for child_child in child_childs]
-                self.activate_power(child, globals.after, characters[character_pos])
+                if not self.activate_power(child, globals.before, characters[character_pos]):
+                    #select positions after activate power
+                    self.select_positions(child) 
+                else:
+                    #select positions without activate power, power activations will be called 
+                    self.select_positions(child) 
 
+                #self.activate_power(child, globals.after, characters[character_pos])
+#Create nodes for action to do in tose functions
+#only first child
     
     def activate_power(self, node:Node, activables, character):
         if not character["color"] in activables:
-            return node
+            return False
         node.data["question type"] = "activate {} power".format(character["color"])
+        node.data["data"] = [0,1]
         print("in activate_power")
+        return True
     
 
     def calculate_node_heuristic(self, node:Node):

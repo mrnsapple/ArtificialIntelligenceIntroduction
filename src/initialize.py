@@ -136,6 +136,7 @@ class Initialize():
     @return Node answer to give to the server
     """
     def launch_tree(self, data):
+        
         self.problem.initial_state = Node(data)
         node:Node = self.tree.tree_search(self.problem, self.algorithm)
         return 0

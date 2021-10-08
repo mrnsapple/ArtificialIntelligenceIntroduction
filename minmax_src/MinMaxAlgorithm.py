@@ -18,6 +18,8 @@ class MinMaxAlgorithm(Algorithm):
     #call again problem until reached a final node in all branches
     def addChild(self, problem: MinMaxProblem, node: Node):
         #check node is  final, meaning the node is end of current player turn
+        if not "node_state" in node.data:
+            node.data["node_state"] = "min"
         if node.data["node_state"] is "final":
             self.final_nodes.append(node)
             return 
