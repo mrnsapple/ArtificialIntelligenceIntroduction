@@ -5,6 +5,7 @@ from ArtificialIntelligenceIntroduction.src.problem import Problem
 from ArtificialIntelligenceIntroduction.src.algorithm import Algorithm, AlgorithmException
 import random
 from enum import Enum
+from typing import List
 class NodeState(Enum):
     Max=1
     Min=2
@@ -24,7 +25,7 @@ class MinMaxAlgorithm(Algorithm):
             self.final_nodes.append(node)
             return 
         problem.getSuccessors(node)
-        [self.addChild(child) for child in node.childs]
+        [self.addChild(problem, child) for child in node.childs]
         return 
 
     #check which node gives better value either min or max and return it
@@ -41,9 +42,11 @@ class MinMaxAlgorithm(Algorithm):
         return best_node
 
     #give the node that has the better result to throw in this turn calculating all best moves this player can do in the turn
-    def get_successor(self, problem: MinMaxProblem, node: Node) -> Node:
-        if not node or not problem:
+    def get_successor(self, problem: MinMaxProblem, nodes: List[Node]) -> Node:
+        if not nodes or not problem:
             raise AlgorithmException("Node or problem does not exist")
         self.final_nodes = []
-        self.addChild(problem,node)
-        return self.get_best_choice(node)
+        for node in nodes:
+            self.addChild(problem,node)
+        return self.final_nodes
+        #return self.get_best_choice(node)

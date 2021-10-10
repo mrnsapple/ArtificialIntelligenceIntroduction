@@ -3,6 +3,8 @@ from ArtificialIntelligenceIntroduction.src.problem import Problem
 from ArtificialIntelligenceIntroduction.src.node import Node
 import abc
 from enum import Enum
+from typing import List
+
 class AlgorithmType(Enum):
     MinMax=1
     Random=2
@@ -31,5 +33,5 @@ class Algorithm():
     @return the child node with best heuristic value 
     """
     @abc.abstractmethod
-    def get_successor(self, problem:Problem, node:Node) -> Node:
+    def get_successor(self, problem:Problem, nodes:List[Node]) -> Node:
         return

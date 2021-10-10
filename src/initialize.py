@@ -3,6 +3,7 @@ from ArtificialIntelligenceIntroduction.src.problem import Problem
 from ArtificialIntelligenceIntroduction.src.tree_search import TreeSearch
 from ArtificialIntelligenceIntroduction.src.algorithm import Algorithm, AlgorithmType
 import ArtificialIntelligenceIntroduction.src.protocol as protocol
+import random
 
 import socket
 import logging
@@ -110,6 +111,7 @@ class Initialize():
     """
     def run(self):
         end = False
+        moves_to_do_in_turn = []
         while not end:
             print("IN LOOP")
             received_message = self.get_data()
@@ -117,17 +119,20 @@ class Initialize():
                 print("no message, finished learning")
                 end = True
                 continue
-            self.fantom_logger.debug("|\n|")
-            self.fantom_logger.debug("fantom answers")
-            self.fantom_logger.debug(f"question type ----- {received_message['question type']}")
-            self.fantom_logger.debug(f"data -------------- {received_message['data']}")
-
-            response =self.launch_tree(received_message)
-            self.fantom_logger.debug(f"response index ---- {response}")
-            self.fantom_logger.debug(f"response ---------- {received_message['data'][response]}")
-        
-            self.send_data(response)
-          
+            # self.fantom_logger.debug("|\n|")
+            # self.fantom_logger.debug("fantom answers")
+            # self.fantom_logger.debug(f"question type ----- {received_message['question type']}")
+            # self.fantom_logger.debug(f"data -------------- {received_message['data']}")
+            if not moves_to_do_in_turn:
+                moves_to_do_in_turn =self.launch_tree(received_message)
+            if moves_to_do_in_turn and moves_to_do_in_turn[-1] < len(received_message["data"]):
+                self.send_data(moves_to_do_in_turn.pop())
+            else:
+                self.send_data(random.randint(0, len(received_message["data"])-1))
+            
+            # self.fantom_logger.debug(f"response index ---- {moves_to_do_in_turn}")
+            # self.fantom_logger.debug(f"response ---------- {received_message['data'][response]}")
+            #self.send_data(response)
 
     """
     Run the tree search that will return an answer to the server given a specific problem and algorithm
@@ -138,5 +143,5 @@ class Initialize():
     def launch_tree(self, data):
         
         self.problem.initial_state = Node(data)
-        node:Node = self.tree.tree_search(self.problem, self.algorithm)
-        return 0
+        moves_to_do_in_turn = self.tree.tree_search(self.problem, self.algorithm)
+        return moves_to_do_in_turn

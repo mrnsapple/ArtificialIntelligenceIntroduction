@@ -2,6 +2,7 @@
 #import ArtificialIntelligenceIntroduction.src.algorithm 
 import abc
 from ArtificialIntelligenceIntroduction.src.node import Node
+from typing import List
 
 class ProblemException(Exception):
     def __init__(self, *args: object) -> None:
@@ -27,5 +28,5 @@ class Problem():
 
     """
     @abc.abstractmethod
-    def compare_with_desired_state(self, current:Node):
+    def compare_with_desired_state(self, node:List[Node]):
         return False

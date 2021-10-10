@@ -1,8 +1,8 @@
 
+
 class NodeException(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)    
-
 class Node():
     """
     Class with the necessary information to represent a node in the tree search
@@ -23,6 +23,7 @@ class Node():
         self.childs = childs
         self.tree_lvl = tree_lvl
         self.is_visited = is_visited
+       
 
     """
     wheter the current node has a parent

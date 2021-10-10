@@ -30,10 +30,11 @@ class TreeSearch():
     def tree_search(self, problem: Problem, algorithm:Algorithm):
         if not problem or not algorithm:
             raise(TreeSearchException("Problem or Algorithm are empty"))
-        n = problem.initial_state
+        n = [problem.initial_state]
         while (n):
-            if problem.compare_with_desired_state(n):
-                return n
+            result = problem.compare_with_desired_state(n)
+            if result:
+                return result
             n = algorithm.get_successor(problem, n)
             if not n:
                 raise(TreeSearchException("No solution found"))

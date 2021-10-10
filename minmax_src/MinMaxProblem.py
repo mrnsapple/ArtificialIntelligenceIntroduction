@@ -1,6 +1,7 @@
-from typing import List, Set
+from typing import Dict, List, Set
 from ArtificialIntelligenceIntroduction.src.node import Node
 from ArtificialIntelligenceIntroduction.minmax_src import globals
+
 
 class MinMaxProblemException(Exception):
     def __init__(self, *args: object) -> None:
@@ -8,20 +9,23 @@ class MinMaxProblemException(Exception):
       
 class MinMaxProblem():
     
-    def __init__(self, initial_state= None) -> None:
+    def __init__(self, initial_state:Node= None) -> None:
         self.question_types = {
-            "select position":self.select_positions,
+            #"select position":self.select_positions,
             "select character":self.select_characters,
-            "activate":self.activate_power,#boolean of yes or no do it
-            "purple character power":self.activate_power,
-            "brown character power":self.activate_power,
-            "white character power move ":self.activate_power,
-            "grey character power":self.activate_power,
-            "blue character power room":self.activate_power,
-            "blue character power exit":self.activate_power
+            #"activate":self.activate_power,#boolean of yes or no do it
+            #"purple character power":self.activate_power,
+            #"brown character power":self.activate_power,
+            #"white character power move ":self.activate_power,
+            #"grey character power":self.activate_power,
+            #"blue character power room":self.activate_power,
+            #"blue character power exit":self.activate_power
         }
         self.initial_state = initial_state
-        self.num_tours = 2
+        if self.initial_state:
+            self.initial_state.data["node_state"] = "min"
+        self.tree_lvl = 1
+        self.moves_to_play=[]
 
 #we take this character with this position
 #in the node it contains all the stuff to perform for the round(need to perfectly replicate server)
@@ -43,7 +47,7 @@ class MinMaxProblem():
         #create a child node which each possible player move
         #update character position+change question+addresponse of position took in child
         for pos in node.data["data"]:
-            child = Node(data=node.data["data"], parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
+            child = Node(data=node.data.copy(), parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
             node.childs.append(child)
             for character_pos in range(child.data["characters"]):
                 if child.data["characters"][character_pos]["color"] is character_to_move["color"]:
@@ -52,31 +56,39 @@ class MinMaxProblem():
                     child.data["question type"] = ""#check which player is
     
     def select_characters(self, node:Node):
-        #heuristic for this fail
-        print("in select_characters, the tourn started")
-        characters = node.data["data"]
-        for character in characters:
-            child = Node(data=node.data["data"], parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
-            child.data["node_state"] = node.data["node_state"]
-            node.childs.append(child)
-            for character_pos in range(characters):
+        if "response_index" in node.data:       
+            if not self.activate_power(node, globals.before, node.data["data"][node.data["response_index"]]):
+                #select positions after activate power
+                self.activate_power(node, globals.after, node.data["data"][node.data["response_index"]])
+                #self.select_positions(node.data["response_index"]) 
+            #else:
+                #select positions without activate power, power activations will be called 
+            #    self.select_positions(child) 
+        else:
+            #its initial node
+            print("in select_characters, the tourn started")
+            characters = node.data["data"]
+            index = 0
+            for character_pos in range(len(characters)):
+                character = characters[character_pos]
+                child = Node(data=node.data.copy(), parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
+                #child.data["node_state"] = node.data["node_state"]
+                node.childs.append(child)
                 child.data["response_index"] = character_pos
-                if not self.activate_power(child, globals.before, characters[character_pos]):
-                    #select positions after activate power
-                    self.select_positions(child) 
-                else:
-                    #select positions without activate power, power activations will be called 
-                    self.select_positions(child) 
-
-                #self.activate_power(child, globals.after, characters[character_pos])
-#Create nodes for action to do in tose functions
-#only first child
-    
+                    
+    #Create nodes for action to do in tose functions
+    #only first child
     def activate_power(self, node:Node, activables, character):
         if not character["color"] in activables:
-            return False
-        node.data["question type"] = "activate {} power".format(character["color"])
-        node.data["data"] = [0,1]
+            return False 
+        for i in range(2):
+            child = Node(data=node.data.copy(), parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
+            node.childs.append(child)
+            child.data["question type"] = "activate {} power".format(character["color"])
+            child.data["data"] = [0,1]
+            child.data["node_state"] = "final"
+            child.data["response_index"] = i
+            print("response index:{}".format(i))
         print("in activate_power")
         return True
     
@@ -106,8 +118,8 @@ class MinMaxProblem():
         #    print("we are the fantome")
         
     def calculate_child_node_heuristic(self, node:Node):
-            for child in node.childs:
-                self.calculate_node_heuristic(child)
+        for child in node.childs:
+            self.calculate_node_heuristic(child)
 
 
     def getSuccessors(self, node:Node):
@@ -117,16 +129,22 @@ class MinMaxProblem():
                 function(node)
         self.calculate_child_node_heuristic(node)
 
-    def get_return_node(self, node:Node):
-        if node.parent is self.initial_state:
-            return node
-        self.get_return_node(node.parent)
+    def get_instructions(self, node:Node):
+        
+        if not node or not "response_index" in node.data  or node.parent is self.initial_state:
+            return self.moves_to_play
+        if node.data["game state"]["num_tour"] == self.initial_state.data["game state"]["num_tour"]:
+            self.moves_to_play.append(node.data["response_index"])
+        self.get_instructions(node.parent)
 
 
-    def compare_with_desired_state(self, current:Node):
+    def compare_with_desired_state(self, nodes:List[Node]):
         print("comparr with desired state")
-        if current.data["game state"]["num_tour"] < self.num_tours + self.initial_state.data["game state"]["num_tour"]:
-            return None
-        return self.get_return_node(current)    
-      
+        chosen_node=None
+        self.moves_to_play=[]
+        for node in nodes:
+            if node.tree_lvl >= self.tree_lvl+ self.initial_state.tree_lvl:# + self.initial_state.data["game state"]["num_tour"]:
+                chosen_node = node
+        self.get_instructions(chosen_node)    
+        return self.moves_to_play
     

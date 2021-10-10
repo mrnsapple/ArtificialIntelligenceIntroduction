@@ -1,4 +1,3 @@
-from ArtificialIntelligenceIntroduction.minmax_src.MinMaxProblem import MinMaxProblem
 from ArtificialIntelligenceIntroduction.src.problem import Problem
 import socket
 import logging
