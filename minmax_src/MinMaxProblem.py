@@ -25,6 +25,7 @@ class MinMaxProblem():
         if self.initial_state:
             self.initial_state.data["node_state"] = "min"
         self.tree_lvl = 1
+        self.iteration = 0
         self.moves_to_play=[]
 
 #we take this character with this position

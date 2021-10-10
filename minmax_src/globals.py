@@ -13,7 +13,7 @@ port = 12001
 link.bind((host, port))
 # list that will later contain the sockets
 clients = []
-
+max_iterations=10
 """
     game data
 """

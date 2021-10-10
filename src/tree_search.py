@@ -2,6 +2,7 @@
 from ArtificialIntelligenceIntroduction.src.algorithm import Algorithm
 from ArtificialIntelligenceIntroduction.src.problem import Problem
 from ArtificialIntelligenceIntroduction.src.node import Node
+import ArtificialIntelligenceIntroduction.minmax_src.globals as globals
 
 
 class TreeSearchException(Exception):
@@ -31,13 +32,16 @@ class TreeSearch():
         if not problem or not algorithm:
             raise(TreeSearchException("Problem or Algorithm are empty"))
         n = [problem.initial_state]
+        iteration = 0
+        
         while (n):
             result = problem.compare_with_desired_state(n)
-            if result:
+            if result or iteration > globals.max_iterations:
                 return result
             n = algorithm.get_successor(problem, n)
             if not n:
                 raise(TreeSearchException("No solution found"))
+            iteration+=1
         return None
         print("SOLUTION FOUND")
 
