@@ -16,9 +16,13 @@ class MinMaxAlgorithm(Algorithm):
         self.depth = 4
         self.final_nodes = []
     
-    #call again problem until reached a final node in all branches
+    """
+    Get a successor for a given node until reached a final node in all branches
+    
+    @param problem:MinMaxProblem the problem to solve
+    @param node:Node the node to find successors 
+    """
     def addChild(self, problem: MinMaxProblem, node: Node):
-        #check node is  final, meaning the node is end of current player turn
         if not "node_state" in node.data:
             node.data["node_state"] = "min"
         if node.data["node_state"] is "final":
@@ -28,7 +32,10 @@ class MinMaxAlgorithm(Algorithm):
         [self.addChild(problem, child) for child in node.childs]
         return 
 
-    #check which node gives better value either min or max and return it
+    """
+    unused function-Check which node gives better heuristic
+
+    """
     def get_best_choice(self, node):
         state = node.data["node_state"]
         if not self.final_nodes:
@@ -41,7 +48,12 @@ class MinMaxAlgorithm(Algorithm):
                 best_node = node
         return best_node
 
-    #give the node that has the better result to throw in this turn calculating all best moves this player can do in the turn
+    """
+    Give the best successors for a set of nodes.
+    
+    @param problem:MinMaxProblem 
+    @param nodes:List[Nodes] the nodes to find the best successors from
+    """
     def get_successor(self, problem: MinMaxProblem, nodes: List[Node]) -> Node:
         if not nodes or not problem:
             raise AlgorithmException("Node or problem does not exist")
@@ -49,4 +61,3 @@ class MinMaxAlgorithm(Algorithm):
         for node in nodes:
             self.addChild(problem,node)
         return self.final_nodes
-        #return self.get_best_choice(node)
