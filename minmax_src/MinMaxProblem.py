@@ -28,16 +28,6 @@ class MinMaxProblem():
         self.iteration = 0
         self.moves_to_play=[]
 
-#we take this character with this position
-#in the node it contains all the stuff to perform for the round(need to perfectly replicate server)
-#we do node one question answered to server,better first version
-#so lets study all possible combinations of moves
-#if we do action by action what happens is that we move from min max to maxmaxmax three turns but it could work
-#if we do turn base, the node stores all the player moves for the turn(but then if we do it wrong, we use randomness, can work)
-#activate power
-#move
-#activate power
-
 
     def select_positions(self, node:Node):
         if node.parent.data["question type"] is not "select character":
@@ -67,18 +57,14 @@ class MinMaxProblem():
             #    self.select_positions(child) 
         else:
             #its initial node
-            print("in select_characters, the tourn started")
             characters = node.data["data"]
             index = 0
             for character_pos in range(len(characters)):
                 character = characters[character_pos]
                 child = Node(data=node.data.copy(), parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)
-                #child.data["node_state"] = node.data["node_state"]
                 node.childs.append(child)
                 child.data["response_index"] = character_pos
                     
-    #Create nodes for action to do in tose functions
-    #only first child
     def activate_power(self, node:Node, activables, character):
         if not character["color"] in activables:
             return False 
@@ -93,11 +79,13 @@ class MinMaxProblem():
         print("in activate_power")
         return True
     
+    """
+    Calculate node heuristic
+    To do->should be the sum of previous nodes corresponding to the same turn heuristics
 
+    @param node:Node
+    """
     def calculate_node_heuristic(self, node:Node):
-      
-        #one tourn, or rather, one action and the tourn value is the sum of the actions heuristic   
-
         #calculate how many characters are alone and how many togheter
         game_state = node.data["game state"]
         characters = game_state["characters"]
@@ -107,7 +95,6 @@ class MinMaxProblem():
             for p in characters:
                 if p["position"] == i:
                     partition[i] = partition[i]+1
-            #remaining character suspects*numbe of charactor alone/total number of characters
         #Calculate number of characters alone
         number_characters_alone=0
         for p in partition:
@@ -122,7 +109,6 @@ class MinMaxProblem():
         for child in node.childs:
             self.calculate_node_heuristic(child)
 
-
     def getSuccessors(self, node:Node):
         question_type = node.data["question type"]
         for question, function in self.question_types.items():
@@ -131,16 +117,13 @@ class MinMaxProblem():
         self.calculate_child_node_heuristic(node)
 
     def get_instructions(self, node:Node):
-        
         if not node or not "response_index" in node.data  or node.parent is self.initial_state:
             return self.moves_to_play
         if node.data["game state"]["num_tour"] == self.initial_state.data["game state"]["num_tour"]:
             self.moves_to_play.append(node.data["response_index"])
         self.get_instructions(node.parent)
 
-
     def compare_with_desired_state(self, nodes:List[Node]):
-        print("comparr with desired state")
         chosen_node=None
         self.moves_to_play=[]
         for node in nodes:
