@@ -80,6 +80,51 @@ class MinMaxProblem():
         print("in activate_power")
         return True
     
+    def power_color(self, node: Node, character):
+        child = Node(data=node.data["data"], parent = node, childs=[], tree_lvl = node.tree_lvl+1, is_visited=False)
+        game_state = node.date["game state"]
+
+        if character["color"] == "red":
+            child.data["response"] = 1
+        
+        #create node for each room we can lock
+        if character["color"] == "blue":
+            available_rooms = [room for room in range(10)]
+            for room in available_rooms:
+                child.data["response"] = room
+                node.childs.append(child)
+        
+        #create node for each room we can put in shadow
+        if character["color"] == "grey":
+            available_rooms = [room for room in range(10) if room
+                               is not game_state["shadow"]]
+            for room in available_rooms:
+                child.data["response"] = room
+                node.childs.append(child)
+            
+        # if character["color"] == "pink":
+        #     child.data["response"] = {}
+        
+        if character["color"] == "black":
+            child.data["response"] = 1
+        
+        if character["color"] == "white":
+            child.data["response_index"] = {}
+        
+        # create node for each exchange
+        if character["color"] == "purple":
+            available_characters = [q for q in game_state["characters"] if q["color"] is not "purple"]
+            for av_char in available_characters:
+                child.data["response_index"] = av_char["position"]
+                node.childs.append(child)
+        
+        #create node for each character at same position that player
+        if character["color"] == "brown":
+            available_characters = [q for q in game_state["characters"] if character["position"] == q.position and q.color != "brown"]
+            for av_char in available_characters:
+                child.data["response_index"] = av_char["color"]
+                node.childs.append(child)
+            
 
     def calculate_node_heuristic(self, node:Node):
       
