@@ -2,6 +2,7 @@
 #import ArtificialIntelligenceIntroduction.src.algorithm 
 import abc
 from ArtificialIntelligenceIntroduction.src.node import Node
+from typing import List
 
 class ProblemException(Exception):
     def __init__(self, *args: object) -> None:
@@ -9,10 +10,23 @@ class ProblemException(Exception):
         
 
 class Problem():
-    def __init__(self, algorithm_type=None, initial_state= None) -> None:
-        self.initial_state = initial_state
-        self.algorithm_type = algorithm_type
+    """
+    Logics that are specific for each problem to be solve
+    """
 
+    """
+    @param intial_state Initial state at which the algorithm start
+    @return nNone
+    """
+    def __init__(self, initial_state= None) -> None:
+        self.initial_state = initial_state
+
+
+    """
+    Compare node with desired state.
+    Determine if curre
+
+    """
     @abc.abstractmethod
-    def compare_with_desired_state(self, current:Node):
+    def compare_with_desired_state(self, node:List[Node]):
         return False
