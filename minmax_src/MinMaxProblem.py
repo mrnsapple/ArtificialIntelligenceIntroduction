@@ -22,6 +22,8 @@ class MinMaxProblem():
         }
         self.initial_state = initial_state
         self.num_tours = 2
+        self.role = role
+        self.turn = 1
 
 #we take this character with this position
 #in the node it contains all the stuff to perform for the round(need to perfectly replicate server)
@@ -32,6 +34,25 @@ class MinMaxProblem():
 #activate power
 #move
 #activate power
+
+    def turn_number(self, node: Node):
+        if self.turn == 5:
+            self.turn = 0
+        number_turn = node["data"]["game state"]["num_tour"]
+        first_player_in_phase = (number_turn + 1) % 2
+        if (first_player_in_phase == 1 and ((self.turn == 1 or self.turn == 4) and self.role == 'fantom')
+            or (self.role == 'inspector' and (self.turn == 2 or self.turn == 3))):
+            #do something
+            self.turn += 1
+            return
+        elif (first_player_in_phase == 0 and ((self.turn == 1 or self.turn == 4) and self.role == 'inspector')
+            or (self.role == 'fantom' and (self.turn == 2 or self.turn == 3))):
+            self.turn += 1
+            return
+        else:
+            return
+            
+        
 
 
     def select_positions(self, node:Node):
