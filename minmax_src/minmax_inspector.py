@@ -1,15 +1,7 @@
 
 import sys
-import os
-#os.chdir('../')
-
-path = os.getcwd()
-sys.path.append(os.getcwd())
-sys.path.append("/home/oriol/Epitech_projects/5_Year/AI")
-
-sys.path.append("/home/oriol/Epitech_projects/5_Year/AI/ArtificialIntelligenceIntroduction")
-##
-print(path)
+sys.path.insert(0, '..')
+sys.path.insert(0, '../..')
 from ArtificialIntelligenceIntroduction.src.initialize import Initialize
 
 from ArtificialIntelligenceIntroduction.minmax_src.MinMaxAlgorithm import MinMaxAlgorithm

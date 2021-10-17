@@ -43,5 +43,4 @@ class TreeSearch():
                 raise(TreeSearchException("No solution found"))
             iteration+=1
         return None
-        print("SOLUTION FOUND")
-
+        

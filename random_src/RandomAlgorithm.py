@@ -13,8 +13,4 @@ class RandomAlgorithm(Algorithm):
         game_state =  node.data["game state"]
         #RandomProblem(problem).heuristic.checkNodeValue(node.data)
         response_index = random.randint(0, len(data)-1)
-        print("\n\n")
-        print(node.data)
-        print(data)
-        print(game_state)
         return Node(data=response_index, parent=node, childs=[], tree_lvl=node.tree_lvl+1, is_visited=False)

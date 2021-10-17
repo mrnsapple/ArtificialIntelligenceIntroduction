@@ -113,10 +113,10 @@ class Initialize():
         end = False
         moves_to_do_in_turn = []
         while not end:
-            print("IN LOOP")
+            #print("IN LOOP")
             received_message = self.get_data()
             if not received_message:
-                print("no message, finished learning")
+                #print("no message, finished learning")
                 end = True
                 continue
             # self.fantom_logger.debug("|\n|")

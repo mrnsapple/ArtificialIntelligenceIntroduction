@@ -75,8 +75,8 @@ class MinMaxProblem():
             child.data["data"] = [0,1]
             child.data["node_state"] = "final"
             child.data["response_index"] = i
-            print("response index:{}".format(i))
-        print("in activate_power")
+            #print("response index:{}".format(i))
+        #print("in activate_power")
         return True
     
     """
