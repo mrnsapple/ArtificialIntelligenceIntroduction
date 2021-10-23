@@ -1,5 +1,5 @@
 from typing import Dict, List, Set
-from ArtificialIntelligenceIntroduction.src.node import Node
+from ArtificialIntelligenceIntroduction.minmax_src.src.node import Node
 from ArtificialIntelligenceIntroduction.minmax_src import globals
 
 

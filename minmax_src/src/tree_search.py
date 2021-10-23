@@ -1,7 +1,7 @@
 
-from ArtificialIntelligenceIntroduction.src.algorithm import Algorithm
-from ArtificialIntelligenceIntroduction.src.problem import Problem
-from ArtificialIntelligenceIntroduction.src.node import Node
+from ArtificialIntelligenceIntroduction.minmax_src.src.algorithm import Algorithm
+from ArtificialIntelligenceIntroduction.minmax_src.src.problem import Problem
+from ArtificialIntelligenceIntroduction.minmax_src.src.node import Node
 import ArtificialIntelligenceIntroduction.minmax_src.globals as globals
 
 
