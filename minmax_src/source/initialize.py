@@ -68,7 +68,7 @@ class Initialize():
     @return None
     """
     def connect(self):
-        logging.debug('This message should go to the log file')
+        #logging.debug('This message should go to the log file')
         self.socket.connect((self.host, self.port))
 
     """
