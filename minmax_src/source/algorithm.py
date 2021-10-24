@@ -1,6 +1,6 @@
 
-from ArtificialIntelligenceIntroduction.minmax_src.src.problem import Problem
-from ArtificialIntelligenceIntroduction.minmax_src.src.node import Node
+from ArtificialIntelligenceIntroduction.minmax_src.source.problem import Problem
+from ArtificialIntelligenceIntroduction.minmax_src.source.node import Node
 import abc
 from enum import Enum
 from typing import List

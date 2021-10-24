@@ -1,7 +1,7 @@
 from ArtificialIntelligenceIntroduction.minmax_src.MinMaxProblem import MinMaxProblem
-from ArtificialIntelligenceIntroduction.minmax_src.src.node import Node
-from ArtificialIntelligenceIntroduction.minmax_src.src.problem import Problem
-from ArtificialIntelligenceIntroduction.minmax_src.src.algorithm import Algorithm, AlgorithmException
+from ArtificialIntelligenceIntroduction.minmax_src.source.node import Node
+from ArtificialIntelligenceIntroduction.minmax_src.source.problem import Problem
+from ArtificialIntelligenceIntroduction.minmax_src.source.algorithm import Algorithm, AlgorithmException
 import random
 from enum import Enum
 from typing import List
