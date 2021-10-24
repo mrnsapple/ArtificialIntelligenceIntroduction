@@ -1,8 +1,8 @@
-from ArtificialIntelligenceIntroduction.minmax_src.source.node import Node
-from ArtificialIntelligenceIntroduction.minmax_src.source.problem import Problem
-from ArtificialIntelligenceIntroduction.minmax_src.source.tree_search import TreeSearch
-from ArtificialIntelligenceIntroduction.minmax_src.source.algorithm import Algorithm, AlgorithmType
-import ArtificialIntelligenceIntroduction.minmax_src.source.protocol as protocol
+from minmax_src.source.node import Node
+from minmax_src.source.problem import Problem
+from minmax_src.source.tree_search import TreeSearch
+from minmax_src.source.algorithm import Algorithm, AlgorithmType
+import minmax_src.source.protocol as protocol
 import random
 
 import socket

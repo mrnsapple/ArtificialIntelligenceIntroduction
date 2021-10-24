@@ -1,6 +1,6 @@
 from typing import Dict, List, Set
-from ArtificialIntelligenceIntroduction.minmax_src.source.node import Node
-from ArtificialIntelligenceIntroduction.minmax_src import globals
+from minmax_src.source.node import Node
+from minmax_src import globals
 
 
 class MinMaxProblemException(Exception):

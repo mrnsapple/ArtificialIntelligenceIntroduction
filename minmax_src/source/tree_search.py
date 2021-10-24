@@ -1,8 +1,8 @@
 
-from ArtificialIntelligenceIntroduction.minmax_src.source.algorithm import Algorithm
-from ArtificialIntelligenceIntroduction.minmax_src.source.problem import Problem
-from ArtificialIntelligenceIntroduction.minmax_src.source.node import Node
-import ArtificialIntelligenceIntroduction.minmax_src.globals as globals
+from minmax_src.source.algorithm import Algorithm
+from minmax_src.source.problem import Problem
+from minmax_src.source.node import Node
+import minmax_src.globals as globals
 
 
 class TreeSearchException(Exception):

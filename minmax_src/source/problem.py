@@ -1,7 +1,7 @@
 
-#import ArtificialIntelligenceIntroduction.minmax_src.source.algorithm 
+#import minmax_src.source.algorithm 
 import abc
-from ArtificialIntelligenceIntroduction.minmax_src.source.node import Node
+from minmax_src.source.node import Node
 from typing import List
 
 class ProblemException(Exception):
