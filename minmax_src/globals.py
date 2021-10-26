@@ -6,11 +6,11 @@ from logging.handlers import RotatingFileHandler
 """
     server setup
 """
-link = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-link.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#link = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#link.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 host = ''
 port = 12001
-link.bind((host, port))
+#link.bind((host, port))
 # list that will later contain the sockets
 clients = []
 max_iterations=10
@@ -52,18 +52,18 @@ mandatory_powers = ["red", "blue", "grey"]
     you can set the appropriate importance level of the data
     that are written to your logfiles.
 """
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    "%(asctime)s :: %(levelname)s :: %(message)s", "%H:%M:%S")
-# logger to file
-if os.path.exists("./logs/game.log"):
-    os.remove("./logs/game.log")
-file_handler = RotatingFileHandler('./logs/game.log', 'a', 1000000, 1)
-file_handler.setLevel(logging.DEBUG)
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-# logger to console
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-logger.addHandler(stream_handler)
+# logger = logging.getLogger()
+# logger.setLevel(logging.DEBUG)
+# formatter = logging.Formatter(
+#     "%(asctime)s :: %(levelname)s :: %(message)s", "%H:%M:%S")
+# # logger to file
+# if os.path.exists("./logs/game.log"):
+#     os.remove("./logs/game.log")
+# file_handler = RotatingFileHandler('./logs/game.log', 'a', 1000000, 1)
+# file_handler.setLevel(logging.DEBUG)
+# file_handler.setFormatter(formatter)
+# logger.addHandler(file_handler)
+# # logger to console
+# stream_handler = logging.StreamHandler()
+# stream_handler.setLevel(logging.DEBUG)
+# logger.addHandler(stream_handler)
